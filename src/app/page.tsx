@@ -1,6 +1,7 @@
 import Banner from '@/components/homepage/banner';
-import Books from '@/components/homepage/books';
+
 import React from 'react';
+import Books from './books/page';
 
 const HomePage = () => {
   return (

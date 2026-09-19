@@ -7,7 +7,7 @@ import Link from "next/link";
 const Nav = () => {
     const Links = <>
         <li> <Link href="/">Home</Link> </li>
-        <li> <Link href="/Books">Books</Link> </li>
+        <li> <Link href="/books">Books</Link> </li>
     </>
 
 
