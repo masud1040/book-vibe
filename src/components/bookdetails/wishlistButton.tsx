@@ -7,22 +7,22 @@ import React, { useContext } from "react";
 import { toast } from "react-toastify";
 
 
-const ReadButton = ({ book }: { book: IBook }) => {
-  const { readBooks, setReadBooks } = useContext(BooksContext);
+const WishlistButton = ({ book }: { book: IBook }) => {
+  const {wishlist, setWishlist} = useContext(BooksContext);
 
   const handleReadBook = () => {
-    console.log("read book btn triggered", book);
+    console.log("wishlist btn triggered", book);
 
     // setReadBooks((prevReadBooks) => [...prevReadBooks, book]);
-    setReadBooks([...readBooks, book]);
-    toast.success("Book added to Read Books");
+    setWishlist([...wishlist, book]);
+    toast.success("Book added to Wishlist");
   
   };
   return (
     <button className="btn btn-primary flex-1" onClick={() => handleReadBook()}>
-      Read
+      Wishlist
     </button>
   );
 };
 
-export default ReadButton;
+export default WishlistButton;

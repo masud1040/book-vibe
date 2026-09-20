@@ -1,4 +1,5 @@
 import ReadButton from '@/components/bookdetails/readbutton';
+import WishlistButton from '@/components/bookdetails/wishlistButton';
 import { IBook } from '@/types/booktype';
 import Image from 'next/image';
 import React from 'react';
@@ -159,9 +160,7 @@ const BookId = async ({ params }: IDetailBookParams) => {
                         <ReadButton book={book}></ReadButton>
                         
 
-                        <button className="rounded-lg bg-cyan-500 px-6 py-3 font-medium text-white transition hover:bg-cyan-600">
-                            Wishlist
-                        </button>
+                      <WishlistButton book={book}></WishlistButton>
                     </div>
 
                 </div>
