@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { BooksContext } from "@/context/bookcontext";
 
 import {
@@ -14,16 +14,47 @@ import {
   FiEye,
 } from "react-icons/fi";
 import ListedBooksCard from "@/components/shared/listedbookscard";
+import { IBook } from "@/types/booktype";
 
 const ListedBooks = () => {
   const { readBooks, wishlist } = useContext(BooksContext);
+  const [sortBy, setSortBy] = useState<"rating" | "pages" | "year">("rating");
+  // console.log(sortBy);
 
+  const sortedBooks =(books:IBook[]) =>{
+    const sortBooks=[...books];
+    if(sortBy === "rating"){
+      return sortBooks.sort((a, b) => b.rating - a.rating);
+    }
+    if(sortBy === "pages"){
+      return sortBooks.sort((a, b) => b.totalPages - a.totalPages);
+    }
+    if(sortBy === "year"){
+      return  sortBooks.sort((a, b) => b.yearOfPublishing - a.yearOfPublishing);
+    }
+  }
+
+  const sortedReadBooks = sortedBooks(readBooks);
+  const sortedWishlist = sortedBooks(wishlist);
+
+  // console.log(sortedReadBooks);
+  // console.log(sortedWishlist);
   return (
     <div className="container mx-auto px-4 py-5">
       {/* Page Title */}
       <h1 className="my-3 rounded-xl bg-amber-100 py-14 text-center text-3xl font-bold text-gray-900">
         Listed Books
       </h1>
+      <select
+      value={sortBy}
+      onChange={(e) => setSortBy(e.target.value as "rating" | "pages" | "year")}
+       defaultValue="Pick a Runtime"
+      className="select select-success">
+        <option disabled={true}>sort by</option>
+        <option value={"rating"}>Rating</option>
+        <option value={"pages"}>Number of pages</option>
+        <option value={"year"}>Published Year</option>
+      </select>
 
       {/* Tabs */}
       <div className="tabs tabs-box mt-6">
@@ -39,8 +70,11 @@ const ListedBooks = () => {
         <div className="tab-content border-base-300 bg-base-100 p-4 md:p-6">
           {readBooks.length > 0 ? (
             <div className="space-y-5">
-              {readBooks.map((book) => (
-               <ListedBooksCard key={book.bookId} book={book}></ListedBooksCard>
+              {sortedReadBooks.map((book) => (
+                <ListedBooksCard
+                  key={book.bookId}
+                  book={book}
+                ></ListedBooksCard>
               ))}
             </div>
           ) : (
@@ -70,8 +104,11 @@ const ListedBooks = () => {
         <div className="tab-content border-base-300 bg-base-100 p-4 md:p-6">
           {wishlist.length > 0 ? (
             <div className="space-y-5">
-              {wishlist.map((book) => (
-                <ListedBooksCard key={book.bookId} book={book}></ListedBooksCard>
+              {sortedWishlist.map((book) => (
+                <ListedBooksCard
+                  key={book.bookId}
+                  book={book}
+                ></ListedBooksCard>
               ))}
             </div>
           ) : (
