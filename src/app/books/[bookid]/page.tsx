@@ -10,12 +10,15 @@ interface IDetailBookParams {
     }>;
 }
 
-const getBooks = async () => {
-    const response = await fetch(
-        'http://localhost:3000/booksData.json'
-    );
+// Get all books
+const getBooks = async (): Promise<IBook[]> => {
+    const response = await fetch('/booksData.json');
 
-    const data = await response.json();
+    if (!response.ok) {
+        throw new Error('Failed to fetch books');
+    }
+
+    const data: IBook[] = await response.json();
 
     return data;
 };
@@ -25,10 +28,12 @@ const BookId = async ({ params }: IDetailBookParams) => {
 
     const books = await getBooks();
 
+    // Find the requested book
     const book = books.find(
-        (book: IBook) => book.bookId === Number(bookid)
+        (book) => book.bookId === Number(bookid)
     );
 
+    // If book doesn't exist
     if (!book) {
         return (
             <div className="flex min-h-[400px] items-center justify-center">
@@ -41,7 +46,6 @@ const BookId = async ({ params }: IDetailBookParams) => {
 
     return (
         <div className="mx-auto max-w-6xl px-4 py-10">
-
             <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
 
                 {/* Book Image */}
@@ -65,7 +69,7 @@ const BookId = async ({ params }: IDetailBookParams) => {
 
                     {/* Author */}
                     <p className="mt-3 text-lg text-gray-600">
-                        By :{' '}
+                        By:{' '}
                         <span className="font-semibold text-gray-800">
                             {book.author}
                         </span>
@@ -157,10 +161,9 @@ const BookId = async ({ params }: IDetailBookParams) => {
 
                     {/* Buttons */}
                     <div className="mt-7 flex gap-3">
-                        <ReadButton book={book}></ReadButton>
-                        
+                        <ReadButton book={book} />
 
-                      <WishlistButton book={book}></WishlistButton>
+                        <WishlistButton book={book} />
                     </div>
 
                 </div>
