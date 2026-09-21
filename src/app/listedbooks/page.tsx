@@ -24,14 +24,15 @@ const ListedBooks = () => {
   const sortedBooks =(books:IBook[]) =>{
     const sortBooks=[...books];
     if(sortBy === "rating"){
-      return sortBooks.sort((a, b) => b.rating - a.rating);
+      sortBooks.sort((a, b) => b.rating - a.rating);
     }
-    if(sortBy === "pages"){
-      return sortBooks.sort((a, b) => b.totalPages - a.totalPages);
+     else if(sortBy === "pages"){
+      sortBooks.sort((a, b) => b.totalPages - a.totalPages);
     }
-    if(sortBy === "year"){
-      return  sortBooks.sort((a, b) => b.yearOfPublishing - a.yearOfPublishing);
+    else if(sortBy === "year"){
+     sortBooks.sort((a, b) => b.yearOfPublishing - a.yearOfPublishing);
     }
+    return sortBooks;
   }
 
   const sortedReadBooks = sortedBooks(readBooks);
