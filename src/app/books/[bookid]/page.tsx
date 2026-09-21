@@ -26,24 +26,32 @@ const getBooks = async (): Promise<IBook[]> => {
 const BookId = async ({ params }: IDetailBookParams) => {
   const { bookid } = await params;
 
-  const books = await getBooks();
+  const books: IBook[] = await getBooks();
 
-  // Find the requested book
-  const book = books.find((book) => book.bookId === Number(bookid));
+  // Find book by ID
+  const book: IBook | undefined = books.find(
+    (item: IBook) => item.bookId === Number(bookid)
+  );
 
-  // If book doesn't exist
+  // Book not found
   if (!book) {
     return (
       <div className="flex min-h-[400px] items-center justify-center">
-        <h2 className="text-2xl font-bold text-red-500">Book not found</h2>
+        <h2 className="text-2xl font-bold text-red-500">
+          Book not found
+        </h2>
       </div>
     );
   }
 
+  // Explicitly define tags as string array
+  const tags: string[] = book.tags;
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-10">
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2">
-        {/* Book Image */}
+
+        {/* ================= BOOK IMAGE ================= */}
         <div className="flex items-center justify-center rounded-2xl bg-gray-100 p-8">
           <Image
             src={book.image}
@@ -54,79 +62,117 @@ const BookId = async ({ params }: IDetailBookParams) => {
           />
         </div>
 
-        {/* Book Details */}
+        {/* ================= BOOK DETAILS ================= */}
         <div className="flex flex-col justify-center">
+
           {/* Book Name */}
-          <h1 className="text-4xl font-bold text-gray-900">{book.bookName}</h1>
+          <h1 className="text-4xl font-bold text-gray-900">
+            {book.bookName}
+          </h1>
 
           {/* Author */}
           <p className="mt-3 text-lg text-gray-600">
             By:{" "}
-            <span className="font-semibold text-gray-800">{book.author}</span>
+            <span className="font-semibold text-gray-800">
+              {book.author}
+            </span>
           </p>
 
           {/* Category */}
           <div className="mt-5 border-y border-gray-200 py-4">
-            <span className="font-medium text-gray-600">Category</span>
+            <span className="font-medium text-gray-600">
+              Category
+            </span>
 
-            <p className="mt-1 text-gray-900">{book.category}</p>
+            <p className="mt-1 text-gray-900">
+              {book.category}
+            </p>
           </div>
 
           {/* Review */}
           <div className="mt-5">
             <p className="leading-7 text-gray-600">
-              <span className="font-bold text-gray-900">Review:</span>{" "}
+              <span className="font-bold text-gray-900">
+                Review:
+              </span>{" "}
               {book.review}
             </p>
           </div>
 
-          {/* Tags */}
+          {/* ================= TAGS ================= */}
           <div className="mt-5">
-            <span className="font-bold text-gray-900">Tags</span>
+            <span className="font-bold text-gray-900">
+              Tags
+            </span>
 
-            {book.tags.map((tag: string) => (
-              <span
-                key={tag}
-                className="rounded-full bg-green-50 px-4 py-1 text-sm text-green-600"
-              >
-                #{tag}
-              </span>
-            ))}
+            <div className="mt-2 flex flex-wrap gap-2">
+              {tags.map((tag: string) => (
+                <span
+                  key={tag}
+                  className="rounded-full bg-green-50 px-4 py-1 text-sm font-medium text-green-600"
+                >
+                  #{tag}
+                </span>
+              ))}
+            </div>
           </div>
 
-          {/* Book Information */}
+          {/* ================= BOOK INFORMATION ================= */}
           <div className="mt-5 space-y-3 border-t border-gray-200 pt-5">
-            <div className="flex justify-between">
-              <span className="text-gray-500">Number of Pages:</span>
 
-              <span className="font-semibold">{book.totalPages}</span>
+            {/* Pages */}
+            <div className="flex justify-between">
+              <span className="text-gray-500">
+                Number of Pages:
+              </span>
+
+              <span className="font-semibold text-gray-800">
+                {book.totalPages}
+              </span>
             </div>
 
+            {/* Publisher */}
             <div className="flex justify-between">
-              <span className="text-gray-500">Publisher:</span>
+              <span className="text-gray-500">
+                Publisher:
+              </span>
 
-              <span className="font-semibold">{book.publisher}</span>
+              <span className="font-semibold text-gray-800">
+                {book.publisher}
+              </span>
             </div>
 
+            {/* Publishing Year */}
             <div className="flex justify-between">
-              <span className="text-gray-500">Year of Publishing:</span>
+              <span className="text-gray-500">
+                Year of Publishing:
+              </span>
 
-              <span className="font-semibold">{book.yearOfPublishing}</span>
+              <span className="font-semibold text-gray-800">
+                {book.yearOfPublishing}
+              </span>
             </div>
 
+            {/* Rating */}
             <div className="flex justify-between">
-              <span className="text-gray-500">Rating:</span>
+              <span className="text-gray-500">
+                Rating:
+              </span>
 
-              <span className="font-semibold">⭐ {book.rating}</span>
+              <span className="font-semibold text-gray-800">
+                ⭐ {book.rating}
+              </span>
             </div>
+
           </div>
 
-          {/* Buttons */}
+          {/* ================= BUTTONS ================= */}
           <div className="mt-7 flex gap-3">
             <ReadButton book={book} />
 
             <WishlistButton book={book} />
           </div>
+
         </div>
       </div>
     </div>
